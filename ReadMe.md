@@ -28,7 +28,7 @@ Install Dependencies
 ### Clone the Project
 
 ```bash
-    git clone https://github.com/kumarvmsathish
+    git clone https://github.com/kumarvmsathish/fastapi
 ```
 
 ### Go to project directory
