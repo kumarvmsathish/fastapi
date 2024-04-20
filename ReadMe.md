@@ -6,6 +6,12 @@ This project is about Python FastAPI implementation
 
 - [@sathish] (https://github.com/kumarvmsathish)
 
+## Create Virtual Environment
+```bash
+    python -m venv venv
+    . venv/bin/activate or source venv/bin/activate
+```
+
 
 Install Dependencies
 
