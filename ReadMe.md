@@ -48,6 +48,10 @@ Install Dependencies
 ```bash
     uvicorn main:app --reload
 ```
+#### Run spcific module app
+```bash
+    uvicorn blog.main:app --reload
+```
 
 
 
