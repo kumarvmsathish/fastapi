@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, status, Response
 from . import models
 from . import schemas
 from .database import engine, SessonLocal
@@ -17,7 +17,7 @@ def get_db():
         db.close()
 
 
-@app.post("/createBlog")
+@app.post("/createBlog", status_code = status.HTTP_201_CREATED)
 def createBlog(request: models.Blog, db: Session = Depends(get_db)):
     new_blog = schemas.Blog(title = request.title, body = request.body)
     db.add(new_blog)
@@ -33,7 +33,11 @@ def getAllBlogs(db = Depends(get_db)):
 
 
 @app.get("/blog/{id}")
-def getBlog(id: int, db = Depends(get_db)):
+def getBlog(id: int, response: Response, db = Depends(get_db)):
     blog = db.query(schemas.Blog).filter(schemas.Blog.id==id).first()
+    if not blog:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return {"message": f"Blog with id {id} is not found"}
+
     return blog
 
