@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, status, Response
+from fastapi import FastAPI, Depends, status, Response, HTTPException
 from . import models
 from . import schemas
 from .database import engine, SessonLocal
@@ -36,8 +36,9 @@ def getAllBlogs(db = Depends(get_db)):
 def getBlog(id: int, response: Response, db = Depends(get_db)):
     blog = db.query(schemas.Blog).filter(schemas.Blog.id==id).first()
     if not blog:
-        response.status_code = status.HTTP_404_NOT_FOUND
-        return {"message": f"Blog with id {id} is not found"}
+       raise HTTPException(status_code= status.HTTP_404_NOT_FOUND, detail=f"Blog with id {id} is not found")
+        # response.status_code = status.HTTP_404_NOT_FOUND
+        # return {"message": f"Blog with id {id} is not found"}
 
     return blog
 
