@@ -43,9 +43,16 @@ def getBlog(id: int, response: Response, db: Session = Depends(get_db)):
     return blog
 
 
+# @app.put("/blog/{id}", status_code = status.HTTP_202_ACCEPTED)
+# def updateBlog(id: int, request: schemas.Blog, db: Session = Depends(get_db)):
+#     result = db.query(schemas.Blog).filter(schemas.Blog.id == id).update({'title': request.title, 'body': request.body})
+#     db.commit()
+#     return {"message": "Updated", "result": result}
+
+
 @app.delete("/deleteBlog/{id}", status_code = status.HTTP_204_NO_CONTENT)
 def deleteBlog(id: int, db:Session = Depends(get_db)):
-    db.query(schemas.Blog).filter(schemas.Blog.id).delete(synchronize_session=False)
+    db.query(schemas.Blog).filter(schemas.Blog.id == id).delete(synchronize_session=False)
     db.commit()
 
     return {"message": "deleted"}
