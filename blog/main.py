@@ -33,7 +33,7 @@ def getAllBlogs(db = Depends(get_db)):
 
 
 @app.get("/blog/{id}")
-def getBlog(id: int, response: Response, db = Depends(get_db)):
+def getBlog(id: int, response: Response, db: Session = Depends(get_db)):
     blog = db.query(schemas.Blog).filter(schemas.Blog.id==id).first()
     if not blog:
        raise HTTPException(status_code= status.HTTP_404_NOT_FOUND, detail=f"Blog with id {id} is not found")
@@ -41,4 +41,12 @@ def getBlog(id: int, response: Response, db = Depends(get_db)):
         # return {"message": f"Blog with id {id} is not found"}
 
     return blog
+
+
+@app.delete("/deleteBlog/{id}", status_code = status.HTTP_204_NO_CONTENT)
+def deleteBlog(id: int, db:Session = Depends(get_db)):
+    db.query(schemas.Blog).filter(schemas.Blog.id).delete(synchronize_session=False)
+    db.commit()
+
+    return {"message": "deleted"}
 
