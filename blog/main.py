@@ -43,11 +43,13 @@ def getBlog(id: int, response: Response, db: Session = Depends(get_db)):
     return blog
 
 
-# @app.put("/blog/{id}", status_code = status.HTTP_202_ACCEPTED)
-# def updateBlog(id: int, request: schemas.Blog, db: Session = Depends(get_db)):
-#     result = db.query(schemas.Blog).filter(schemas.Blog.id == id).update({'title': request.title, 'body': request.body})
-#     db.commit()
-#     return {"message": "Updated", "result": result}
+@app.put("/blog/{id}", status_code = status.HTTP_202_ACCEPTED)
+def updateBlog(id: int, request: models.Blog, db: Session = Depends(get_db)):
+    result = db.query(schemas.Blog).filter(schemas.Blog.id == id).update({'title': request.title, 'body': request.body})
+    # result = db.query(schemas.Blog).filter(schemas.Blog.id == id).update(request.__dict__)
+    db.commit()
+
+    return {"message": "Updated", "result": result}
 
 
 @app.delete("/deleteBlog/{id}", status_code = status.HTTP_204_NO_CONTENT)
