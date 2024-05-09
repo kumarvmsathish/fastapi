@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import FastAPI, Depends, status, Response, HTTPException
 from . import models
 from . import schemas
@@ -26,13 +27,13 @@ def createBlog(request: models.Blog, db: Session = Depends(get_db)):
     return new_blog
 
 
-@app.get("/blogs")
+@app.get("/blogs", response_model= List[models.ShowBlog])
 def getAllBlogs(db = Depends(get_db)):
     blogs = db.query(schemas.Blog).all()
     return blogs
 
 
-@app.get("/blog/{id}")
+@app.get("/blog/{id}", response_model= models.ShowBlog)
 def getBlog(id: int, response: Response, db: Session = Depends(get_db)):
     blog = db.query(schemas.Blog).filter(schemas.Blog.id==id).first()
     if not blog:
